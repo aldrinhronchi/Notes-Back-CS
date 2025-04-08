@@ -1,0 +1,6 @@
+@Notes_Back_CS_HostAddress = http://localhost:5259
+
+GET {{Notes_Back_CS_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
