@@ -1,0 +1,1 @@
+dotnet ef migrations add Inicial --output-dir "Connections\Database\Migrations"

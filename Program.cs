@@ -1,23 +1,17 @@
-var builder = WebApplication.CreateBuilder(args);
+using Notes_Back_CS.Extensions;
 
-// Add services to the container.
+WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
+NativeInjector.RegisterBuild(builder);
 
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+IServiceCollection services = builder.Services;
+IConfiguration configuration = builder.Configuration;
+NativeInjector.RegisterServices(configuration, services);
 
-var app = builder.Build();
+WebApplication? app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
+NativeInjector.ConfigureApp(app, app.Environment);
 app.MapControllers();
+
+Console.WriteLine($"App Started running in {DateTime.Now:dd/MM/yyyy HH:mm:ss}");
 
 app.Run();
