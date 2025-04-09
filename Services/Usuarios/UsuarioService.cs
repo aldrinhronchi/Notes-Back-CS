@@ -22,7 +22,7 @@ namespace Notes_Back_CS.Services.Usuarios
 
         public UsuarioService(IConfiguration configuration, DatabaseContext database)
         {
-            _chaveSecreta = configuration["SecuritySettings:ChaveSecreta"];
+            _chaveSecreta = configuration["SecuritySettings:SecretKey"];
             _database = database;
         }
 
