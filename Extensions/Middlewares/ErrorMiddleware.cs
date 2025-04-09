@@ -1,6 +1,7 @@
 ﻿using Notes_Back_CS.Connections.Database;
 using Notes_Back_CS.Extensions.Helpers;
 using Notes_Back_CS.Models.Entities;
+using Notes_Back_CS.Models.ViewModels;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Net;

@@ -1,1 +1,7 @@
 dotnet ef migrations add Inicial --output-dir "Connections\Database\Migrations"
+
+dotnet ef migrations list
+
+dotnet ef database update
+
+dotnet ef migrations add NovaMigracao --output-dir "Connections\Database\Migrations"

@@ -6,10 +6,10 @@ using Microsoft.IdentityModel.Tokens;
 using Notes_Back_CS.Connections.Configurations;
 using Notes_Back_CS.Connections.Database;
 using Notes_Back_CS.Extensions.Middlewares;
-using Notes_Back_CS.Services.Tarefa;
-using Notes_Back_CS.Services.Tarefa.Interface;
-using Notes_Back_CS.Services.Usuario;
-using Notes_Back_CS.Services.Usuario.Interface;
+using Notes_Back_CS.Services.Tarefas;
+using Notes_Back_CS.Services.Tarefas.Interface;
+using Notes_Back_CS.Services.Usuarios;
+using Notes_Back_CS.Services.Usuarios.Interface;
 using Serilog;
 using System.Text;
 
