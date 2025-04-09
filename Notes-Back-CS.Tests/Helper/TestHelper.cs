@@ -17,7 +17,7 @@ namespace Notes_Back_CS.Tests.Helper
 {
     public static class TestHelper
     {
-        public static string GerarJwtFake()
+        public static string GerarJwtFake(int IDUsuario = 123)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ChaveSecretaSuperSeguraParaTeste"));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -25,7 +25,7 @@ namespace Notes_Back_CS.Tests.Helper
             var token = new JwtSecurityToken(
                 issuer: "TesteIssuer",
                 audience: "TesteAudience",
-                claims: new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "123") },
+                claims: new List<Claim> { new Claim(ClaimTypes.NameIdentifier, IDUsuario.ToString()) },
                 expires: DateTime.UtcNow.AddMinutes(30),
                 signingCredentials: credentials
             );

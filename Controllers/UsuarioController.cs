@@ -34,7 +34,7 @@ namespace Notes_Back_CS.Controllers
             {
                 return BadRequest(ModelState);
             }
-            return this.UsuarioService.Salvar(userViewModel) ? Ok() : BadRequest();
+            return this.UsuarioService.Salvar(userViewModel) ? Ok(true) : BadRequest();
         }
 
         [HttpDelete("{_userID}")]
