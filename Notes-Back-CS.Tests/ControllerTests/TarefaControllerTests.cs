@@ -57,8 +57,8 @@ namespace Notes_Back_CS.Tests.ControllerTests
         public void SalvarTarefa_ComDadosValidos_DeveRetornarOk()
         {
             var mockTarefaService = new Mock<ITarefaService>();
-
-            mockTarefaService.Setup(s => s.Salvar(It.IsAny<Tarefa>())).Returns(true);
+            var tokenValido = TestHelper.GerarJwtFake();
+            mockTarefaService.Setup(s => s.Salvar(tokenValido, It.IsAny<Tarefa>())).Returns(true);
 
             var controller = new TarefaController(mockTarefaService.Object);
 

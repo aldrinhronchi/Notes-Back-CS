@@ -4,6 +4,7 @@ using Notes_Back_CS.Connections.Database;
 using Notes_Back_CS.Connections.Database.Repositories;
 using Notes_Back_CS.Connections.Database.Repositories.Interfaces;
 using Notes_Back_CS.Extensions.Helpers;
+using Notes_Back_CS.Models.Tarefa;
 using Notes_Back_CS.Models.Usuario;
 using Notes_Back_CS.Models.ViewModels;
 using Notes_Back_CS.Services.Usuarios.Interface;
@@ -143,8 +144,21 @@ namespace Notes_Back_CS.Services.Usuarios
                 {
                     throw new ValidationException("Usuario não encontrado");
                 }
-                return UsuarioRepo.Delete(_Usuario);
+                if (UsuarioRepo.Delete(_Usuario))
+                {
+                    List<Tarefa> Tarefas = db.Tarefas.Where(x => x.IDUsuario == UsuarioID).ToList();
+                    IRepository<Tarefa> TarefaRepo = new Repository<Tarefa>(db);
+                    foreach(Tarefa? Tarefa in Tarefas)
+                    {
+                        TarefaRepo.Delete(Tarefa);
+                    }
+                } else
+                {
+                    throw new Exception("Não foi Possivel excluir, tente novamente");
+
+                }
             }
+            return true;
         }
 
         public RequisicaoViewModel<Usuario> Autenticar(LoginViewModel Requisicao)
@@ -183,17 +197,11 @@ namespace Notes_Back_CS.Services.Usuarios
             return requisicao;
         }
 
-        public static string? ObterIDUsuarioDeToken(string token)
-        {
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-
-            return jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-        }
+        
 
         private String EncriptarSenha(String Senha)
         {
-            using (var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(_chaveSecreta)))
+            using (HMACSHA256 hmac = new HMACSHA256(Encoding.UTF8.GetBytes(_chaveSecreta)))
             {
                 byte[] hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(Senha));
 

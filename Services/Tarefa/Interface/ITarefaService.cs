@@ -13,7 +13,7 @@ namespace Notes_Back_CS.Services.Tarefas.Interface
         public RequisicaoViewModel<Tarefa> Listar(String Token, Int32 Pagina, Int32 RegistrosPorPagina,
             String CamposQuery = "", String ValoresQuery = "", String Ordenacao = "", Boolean Ordem = false);
 
-        public Boolean Salvar(Tarefa TarefaViewModel);
+        public Boolean Salvar(string token, Tarefa TarefaViewModel);
 
         public Boolean Excluir(String ID);
     }

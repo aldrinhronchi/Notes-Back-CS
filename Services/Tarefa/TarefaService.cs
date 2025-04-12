@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Kraft_Back_CS.Extensions.Helpers;
+using Microsoft.EntityFrameworkCore;
 using Notes_Back_CS.Connections.Database;
 using Notes_Back_CS.Connections.Database.Repositories;
 using Notes_Back_CS.Connections.Database.Repositories.Interfaces;
@@ -23,16 +24,13 @@ namespace Notes_Back_CS.Services.Tarefas
         public RequisicaoViewModel<Tarefa> Listar(String Token, Int32 Pagina, Int32 RegistrosPorPagina,
              String CamposQuery = "", String ValoresQuery = "", String Ordenacao = "", Boolean Ordem = false)
         {
-            String? usuarioId = UsuarioService.ObterIDUsuarioDeToken(Token);
-            if (usuarioId == null)
-            {
-                throw new UnauthorizedAccessException("Usuário não encontrado no token!");
-            }
-
+            var usuarioId = TokenHelper.ObterIDUsuarioDeToken(Token);
+          
+           
             RequisicaoViewModel<Tarefa> Requisicao;
             using (DatabaseContext db = _database)
             {
-                IQueryable<Tarefa> _Tarefas = db.Tarefas;
+                IQueryable<Tarefa> _Tarefas = db.Tarefas.Where(x => x.IDUsuario == usuarioId);
                 if (!String.IsNullOrWhiteSpace(CamposQuery))
                 {
                     String[] CamposArray = CamposQuery.Split(";|;");
@@ -78,34 +76,38 @@ namespace Notes_Back_CS.Services.Tarefas
                 }
                 else
                 {
-                    _Tarefas = TipografiaHelper.Ordenar(_Tarefas, "Fixado", Ordem);
                     _Tarefas = TipografiaHelper.Ordenar(_Tarefas, "ID", Ordem);
+                    _Tarefas = TipografiaHelper.Ordenar(_Tarefas, "Fixado", Ordem);
+
                 }
                 Requisicao = TipografiaHelper.FormatarRequisicao(_Tarefas, Pagina, RegistrosPorPagina);
             }
             return Requisicao;
         }
 
-        public Boolean Salvar(Tarefa TarefaViewModel)
+        public Boolean Salvar(String Token, Tarefa TarefaViewModel)
         {
+            int usuarioId = TokenHelper.ObterIDUsuarioDeToken(Token);
+           
+            TarefaViewModel.IDUsuario = usuarioId;
             Validator.ValidateObject(TarefaViewModel, new ValidationContext(TarefaViewModel), true);
             using (DatabaseContext db = _database)
             {
-                IRepository<Tarefa> CargoRepo = new Repository<Tarefa>(db);
-                Tarefa? _Cargo = db.Tarefas.AsNoTracking().FirstOrDefault(x => x.ID == TarefaViewModel.ID);
-                if (_Cargo == null)
+                IRepository<Tarefa> TarefaRepo = new Repository<Tarefa>(db);
+                Tarefa? _Tarefa = db.Tarefas.AsNoTracking().FirstOrDefault(x => x.ID == TarefaViewModel.ID);
+                if (_Tarefa == null)
                 {
                     if (TarefaViewModel.ID != 0)
                     {
                         throw new ValidationException("ID deve ser vazio!");
                     }
                     TarefaViewModel.DataCriado = DateTime.UtcNow;
-                    CargoRepo.Create(TarefaViewModel);
+                    TarefaRepo.Create(TarefaViewModel);
                 }
                 else
                 {
                     TarefaViewModel.DataAlterado = DateTime.UtcNow;
-                    CargoRepo.Update(TarefaViewModel);
+                    TarefaRepo.Update(TarefaViewModel);
                 }
             }
 

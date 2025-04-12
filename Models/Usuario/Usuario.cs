@@ -15,7 +15,7 @@ namespace Notes_Back_CS.Models.Usuario
         [StringLength(100)]
         public String Login { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(100)]
         public String Senha { get; set; }
 

@@ -27,7 +27,7 @@ namespace Notes_Back_CS.Controllers
             return Ok(this.UsuarioService.Listar(Pagina, RegistroPorPagina, Campos, Valores, Ordenacao, Ordem));
         }
 
-        [HttpPost]
+        [HttpPost, AllowAnonymous] // EM PROD DEVEMOS SEPARAR OU PERMITIR O CADASTRO APENAS DE USUARIO JA LOGADO
         public IActionResult SalvarUsuario(Usuario userViewModel)
         {
             if (!ModelState.IsValid)

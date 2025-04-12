@@ -41,5 +41,23 @@ namespace Kraft_Back_CS.Extensions.Helpers
             SecurityToken token = Handler.CreateToken(tokenDescriptor);
             return Handler.WriteToken(token);
         }
+        /// <summary>
+        /// Busca o ID do Usuario de dentro do Token
+        /// </summary>
+        /// <param name="token">Token a ter o seu ID extraido</param>
+        /// <returns>o ID de Usuario</returns>
+        public static Int32 ObterIDUsuarioDeToken(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+           
+            var ClaimID = jwtToken.Claims.FirstOrDefault(c => c.Type == "nameid")?.Value;
+            Int32 IDUsuario = 0;
+            if (!Int32.TryParse(ClaimID, out IDUsuario))
+            {
+                throw new UnauthorizedAccessException("Usuário não encontrado no token!");
+            }
+            return IDUsuario;
+        }
     }
 }

@@ -34,7 +34,9 @@ namespace Notes_Back_CS.Controllers
             {
                 return BadRequest(ModelState);
             }
-            return this.TarefaService.Salvar(userViewModel) ? Ok() : BadRequest();
+            string? Token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            return this.TarefaService.Salvar(Token, userViewModel) ? Ok() : BadRequest();
         }
 
         [HttpDelete("{_userID}")]

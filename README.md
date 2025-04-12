@@ -71,4 +71,4 @@ SWAGGER ```/swagger/index.html``` → Swagger Gerado Automaticamente
 Este projeto está licenciado sob a AGPL-3.0 License.
 
 ## 🔗 Frontend
-O frontend deste sistema está desenvolvido em Angular e disponível em outro repositório.
+O frontend deste sistema está desenvolvido em Angular e disponível em https://github.com/aldrinhronchi/Notes-Front-NG.
